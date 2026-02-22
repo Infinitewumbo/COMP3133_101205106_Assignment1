@@ -22,7 +22,13 @@ const resolvers = {
   },
 
   Mutation: {
-    signup: async (_, args) => {
+signup: async (_, args) => {
+      if (!args.email || !args.email.includes('@')) {
+        throw new Error("Validation Error: Invalid email format");
+      }
+      if (!args.password || args.password.length < 6) {
+        throw new Error("Validation Error: Password must be at least 6 characters");
+      }
       const newUser = new User(args);
       return await newUser.save();
     },
